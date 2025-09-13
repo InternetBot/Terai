@@ -1,11 +1,14 @@
-run this command 
+# Terminal Recorder + AI Walkthrough Generator  
 
-pip install -r requirements.txt
-chmod +x terminalRecord.sh
+**Made for my personal use.**  
 
-create a .env file in the same project dir and add this
+This tool records my terminal sessions (e.g. while solving HackTheBox labs) and automatically turns them into clean Markdown walkthroughs. No more manually rewriting every step — the AI generates explanations of commands and outputs for me.  
 
-OPENAI_API_KEY=your-api-key-here
+---
 
+## Commands to run 
 
-
+1. Install dependencies:  
+   ```bash
+   pip install -r requirements.txt
+    ```
