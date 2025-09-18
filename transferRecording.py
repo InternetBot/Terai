@@ -1,9 +1,13 @@
 import openai
+# from google import genai
 import os
 from dotenv import load_dotenv
 
 load_dotenv()
 openai.api_key = os.getenv("OPENAI_API_KEY")
+# client = genai.Client(api_key=os.getenv("GENAI_API_KEY"))
+client = openai.OpenAI(api_key=os.getenv("GENAI_API_KEY"),
+                       base_url="https://generativelanguage.googleapis.com/v1beta/openai/")
 
 #custom prompt type shii 
 PROMPT = (
@@ -21,7 +25,7 @@ PROMPT = (
 )
 
 #function to call the openai api
-def comp(PROMPT, file_content):
+def openai_comp(PROMPT, file_content):
     response = openai.ChatCompletion.create(
         model="gpt-4",
         messages=[
@@ -34,6 +38,26 @@ def comp(PROMPT, file_content):
         temperature=0.7,
     )
     return response.choices[0].message['content']
+
+def gemini_comp(PROMPT, file_content):
+    response = client.chat.completions.create(
+        model="gemini-2.5-flash",
+        messages=[
+            {"role": "system", "content": PROMPT},
+            {"role": "user", "content": file_content}
+        ]
+    )
+    return response.choices[0].message['content']
+
+
+def gemini_comp(PROMPT, file_content):
+    response = client.models.generate_content(
+        model="gemini-2.5-flash",
+        messages=[
+            {"role": "user", "content": file_content}
+        ]
+    )
+    return response.choices[0].message
 
 #read content of the recorded file
 def read_file(file_path):
@@ -53,7 +77,17 @@ def main():
     
     
     file_content = read_file(filename)
-    documentation = comp(PROMPT, file_content)
+
+    print(" Selecting model to use for documentation generation...")
+    # documentation = openai_comp(PROMPT, file_content)
+    model_choice = input("Choose model (1 for OpenAI GPT-4, 2 for Gemini 2.5): ")
+    if model_choice == '1':
+        documentation = openai_comp(PROMPT, file_content)
+    elif model_choice == '2':
+        documentation = gemini_comp(PROMPT, file_content)
+    else:
+        print("Invalid choice. Exiting.")
+        return
 
     output_filename = "terminal_documentation.md"
     with open(output_filename, 'w') as output_file:
