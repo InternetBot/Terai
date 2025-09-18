@@ -21,6 +21,7 @@ This tool records my terminal sessions (e.g. while solving HackTheBox labs) and 
 
 SIDE NOTE: CREATE YOUR .env file and add this in there 
  ```bash
+GENAI_API_KEY=your_genai_api_key
 OPENAI_API_KEY=your-api-key-here
 ```
 
@@ -28,3 +29,4 @@ OPENAI_API_KEY=your-api-key-here
 - Add support for multiple AI models.  
 - Smarter chunking for large logs.  
 - Pre-clean ANSI escape codes.  
+
